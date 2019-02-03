@@ -1,0 +1,38 @@
+language: php
+dist: trusty
+sudo: false
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - $HOME/.composer/cache/repo
+    - $TMPDIR/phpstan/cache
+php:
+  - 7.2
+
+env:
+  matrix:
+    - ANALYZE=address
+    - ANALYZE=commerce
+    - ANALYZE=entity
+    - ANALYZE=entity_reference_revisions
+    - ANALYZE=inline_entity_form
+    - ANALYZE=profile
+    - ANALYZE=state_machine
+
+before_install:
+  - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+  - phpenv config-rm xdebug.ini
+
+install:
+  - composer global require "hirak/prestissimo:^0.3"
+  - composer install -n --prefer-dist --no-suggest
+
+script:
+  - ./vendor/bin/phpstan analyse web/modules/contrib/$ANALYZE
+
+after_script:
+  - echo $(php -r "echo sys_get_temp_dir() . '/phpstan/cache';")
+  - ls $(php -r "echo sys_get_temp_dir() . '/phpstan/cache';")
