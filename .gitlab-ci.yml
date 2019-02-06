@@ -25,5 +25,22 @@ build:
 
 address:
   stage: inspect
-  script: ./vendor/bin/phpstan analyse web/modules/contrib/address
-  allow_failure: true
+  script: ./vendor/bin/phpstan analyse web/modules/contrib/address --no-progress
+commerce:
+  stage: inspect
+  script: ./vendor/bin/phpstan analyse web/modules/contrib/commerce --no-progress
+entity:
+  stage: inspect
+  script: ./vendor/bin/phpstan analyse web/modules/contrib/entity --no-progress
+entity_reference_revisions:
+  stage: inspect
+  script: ./vendor/bin/phpstan analyse web/modules/contrib/entity_reference_revisions --no-progress
+inline_entity_form:
+  stage: inspect
+  script: ./vendor/bin/phpstan analyse web/modules/contrib/inline_entity_form --no-progress
+profile:
+  stage: inspect
+  script: ./vendor/bin/phpstan analyse web/modules/contrib/profile --no-progress
+state_machine:
+  stage: inspect
+  script: ./vendor/bin/phpstan analyse web/modules/contrib/state_machine --no-progress
