@@ -1,16 +1,29 @@
-
+image: circleci/php:7.2-cli
 stages:
   - build
   - inspect
+cache:
+  paths:
+    - vendor
+    - ~/.composer/cache
 
 before_script:
-  image: circleci/php:7.2-cli
+  - echo 'memory_limit=-1' | sudo tee -a /usr/local/etc/php/php.ini
+
+build:
+  stage: build
   before_script:
     - sudo apt-get install libpng-dev -y
     - sudo docker-php-ext-install gd
-    - echo 'memory_limit=-1' | sudo tee -a /usr/local/etc/php/php.ini
     - composer -n global require -n "hirak/prestissimo"
-    - composer install -n --prefer-dist
+  script: composer install -n --prefer-dist
+  artifacts:
+    paths:
+      - bin
+      - vendor
+      - web
 
 address:
+  stage: inspect
   script: ./vendor/bin/phpstan analyse web/modules/contrib/address
+  allow_failure: true
