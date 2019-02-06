@@ -23,24 +23,21 @@ build:
       - vendor
       - web
 
+.job_template: &job_template
+  stage: inspect
+  script: ./vendor/bin/phpstan analyse web/modules/contrib/$CI_JOB_NAME --no-progress
+
 address:
-  stage: inspect
-  script: ./vendor/bin/phpstan analyse web/modules/contrib/address --no-progress
+  <<: *job_definition
 commerce:
-  stage: inspect
-  script: ./vendor/bin/phpstan analyse web/modules/contrib/commerce --no-progress
+  <<: *job_definition
 entity:
-  stage: inspect
-  script: ./vendor/bin/phpstan analyse web/modules/contrib/entity --no-progress
+  <<: *job_definition
 entity_reference_revisions:
-  stage: inspect
-  script: ./vendor/bin/phpstan analyse web/modules/contrib/entity_reference_revisions --no-progress
+  <<: *job_definition
 inline_entity_form:
-  stage: inspect
-  script: ./vendor/bin/phpstan analyse web/modules/contrib/inline_entity_form --no-progress
+  <<: *job_definition
 profile:
-  stage: inspect
-  script: ./vendor/bin/phpstan analyse web/modules/contrib/profile --no-progress
+  <<: *job_definition
 state_machine:
-  stage: inspect
-  script: ./vendor/bin/phpstan analyse web/modules/contrib/state_machine --no-progress
+  <<: *job_definition
